@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bin"
     tools:context=".FiveScore">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="550dp"
+        android:layout_marginLeft="125dp"
+        android:text="촬영하기"
+        />
+
+    <Button
+        android:id="@+id/Certification"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="630dp"
+        android:layout_marginLeft="125dp"
+        android:text="인증하기"
+        />
+
+
+
+
+</RelativeLayout>

@@ -1,14 +1,19 @@
 package com.example.uibase;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
-import android.os.Bundle;
-
-public class MyReceiver extends AppCompatActivity {
+public class MyReceiver extends BroadcastReceiver {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_receiver);
+    public void onReceive(Context context, Intent intent) {
+        // TODO: This method is called when the BroadcastReceiver is receiving
+        // an Intent broadcast.
+
+        Log.d("1", "1");
+
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }
