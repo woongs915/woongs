@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,18 +33,30 @@ import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.Objects;
 
 
 public class SubActivity extends AppCompatActivity {
 
     private static Context context;
+    private ImageView imageView1;
 
     TextView scoreView;
     ImageView UserImg;
-
     int getScore;
     int score;
+
+
+
+    private final int GET_IMAGE_FOR_IMAGEVIEW1 = 201;
+
 
 
     ArrayList<String> list1 = new ArrayList<>();
@@ -57,15 +71,48 @@ public class SubActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Uri selectedImageUri;
+        RequestOptions option1 = new RequestOptions().circleCrop();
+        MultiTransformation option2 = new MultiTransformation(new CenterCrop(), new RoundedCorners(8));
+        MultiTransformation option3 = new MultiTransformation(new FitCenter(), new RoundedCorners(30));
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+            switch(requestCode) {
+                case GET_IMAGE_FOR_IMAGEVIEW1:
+                    selectedImageUri = data.getData();
+                    Glide.with(getApplicationContext()).load(selectedImageUri).apply(option1).into(imageView1);
+                    break;
+            }
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub);
+
+        imageView1 = findViewById(R.id.imageView1);
 
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
 
-        score=0;
+        imageView1.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick (View view){
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, GET_IMAGE_FOR_IMAGEVIEW1);
+            }
+
+        });
+
+
+        score = 0;
         scoreView = findViewById(R.id.score);
         UserImg = findViewById(R.id.imageView);
         mission1 = findViewById(R.id.mission1);
@@ -81,9 +128,8 @@ public class SubActivity extends AppCompatActivity {
         Button score_btn5 = findViewById(R.id.score_btn5);
 
 
-
         Intent getInt = getIntent();
-        getScore = getInt.getIntExtra("score",0);
+        getScore = getInt.getIntExtra("score", 0);
 
 
         //미션
@@ -139,8 +185,6 @@ public class SubActivity extends AppCompatActivity {
         list4.add("등산하기(5점)");
         list4.add("친구랑 인생네컷 찍기(5점)");
         list4.add("가족이나 친구에게 음식해주기(5점)");
-
-
 
 
         Random random = new Random();//랜덤 함수 생성
@@ -208,10 +252,10 @@ public class SubActivity extends AppCompatActivity {
             }
         });*/
 
-        if(getScore!=score){
-            scoreView.setText(String.valueOf(getScore)+"점");
+        if (getScore != score) {
+            scoreView.setText(String.valueOf(getScore) + "점");
 
-            score=getScore;
+            score = getScore;
             if (score >= 100) {
                 UserImg.setImageResource(R.drawable.pro);
             }
@@ -227,6 +271,7 @@ public class SubActivity extends AppCompatActivity {
             }
         }
         Log.d("main", String.valueOf(getScore));
+
 
         score_btn.setOnClickListener(v -> {
 
